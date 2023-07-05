@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./SalesManual.css";
 const SalesManual = () => {
+  // list data here.........
   const items = [
     "3 Nahni Trap",
     "5 layer 1000 liter water tank",
@@ -123,12 +124,16 @@ const SalesManual = () => {
     "UPVC 25 mm SCH-40 3 M Pack 25",
     "UPVC 32 MM SCH-40 3 M Pack 15",
   ];
+  // Drawer useState .......
   const [isDrawerOpen, setDrawerOpen] = useState(false);
+   // Search items useState .......
+  const [searchTerm, setSearchTerm] = useState("");
   const drawerRef = useRef(null);
-
+// opening Drawer code
   const openDrawer = () => {
     setDrawerOpen(true);
   };
+  // closing Drawer code
   const closeDrawer = () => {
     setDrawerOpen(false);
   };
@@ -147,6 +152,7 @@ const SalesManual = () => {
   }, []);
   return (
     <div className="bg-yellow-50 100vh border p-1">
+      {/* the upper part of the table */}
       <div className="flex justify-between">
         <div className="flex items-center mt-0 gap-1 font-semibold">
           <p className="me-7 bg-blue-800 text-white ps-2 pe-2">Sales_Manual</p>
@@ -164,13 +170,15 @@ const SalesManual = () => {
       <div>
         <p>
           {" "}
-          <span className="italic text-gray-600">voucher class </span>
+          <span className="italic text-gray-600 font-semibold">
+            voucher class{" "}
+          </span>
           <span className="ms-9 font-bold"> : Sales</span>
         </p>
       </div>
       <div className="flex justify-between">
         <div className="flex items-center">
-          <p>
+          <p className="font-semibold">
             Party A/c name <span className="ms-3 me-2"> :</span>
           </p>
           <p className="font-bold"> Online Transfer Customer</p>
@@ -221,27 +229,52 @@ const SalesManual = () => {
               className="fixed top-0 right-96 flex items-center justify-center "
               style={{ zIndex: 100 }}
             >
-             <div className="the-list">
-  <div className="text-start ps-2 border bg-purple-100 w-80" style={{ overflow: 'hidden' }}>
-    <p className="bg-blue-800 text-white ps-2 font-semibold">List of the Stock Items</p>
-    <p className="bg-gray-400 ps-2 font-semibold">Item Name &#x25B2;</p>
-    <ul style={{ overflowY: 'scroll', maxHeight: '650px' }}>
-      {items.map((item, index) => (
-        <li key={index} className="hover:bg-red-300">{item}</li>
-      ))}
-    </ul>
-  </div>
-</div>
+              <div className="the-list">
+                <div
+                  className="text-start ps-2 border bg-purple-100 w-80"
+                  style={{ overflow: "hidden" }}
+                >
+                  <p className="bg-blue-800 text-white ps-2 font-semibold">
+                    List of the Stock Items
+                  </p>
+                  <p className="bg-gray-400 ps-2 font-semibold">
+                    Item Name &#x25B2;
+                  </p>
+                  <ul style={{ overflowY: "scroll", maxHeight: "650px" }}>
+                    {items
+                      .filter((item) => {
+                        const lowerCaseItem = item.toLowerCase();
+                        const lowerCaseSearchTerm = searchTerm.toLowerCase();
+                        const mappedSearchTerm =
+                          lowerCaseSearchTerm === "beg" ||
+                          lowerCaseSearchTerm === "bng" ||
+                          lowerCaseSearchTerm === "barig" ||
+                          lowerCaseSearchTerm === "bari" ||
+                          lowerCaseSearchTerm === "bar"
+                            ? "bearing"
+                            : lowerCaseSearchTerm;
+                        return lowerCaseItem.includes(mappedSearchTerm);
+                      })
+                      .map((item, index) => (
+                        <li key={index} className="hover:bg-red-300">
+                          {item}
+                        </li>
+                      ))}
+                  </ul>
+                </div>
+              </div>
             </div>
           )}
+          {/* table codes starts from here */}
           <tbody className="text-sm font-bold">
             <tr className="">
               <td className=" text-start">
                 <input
-                  className="bg-transparent text-start p-1  w-full"
+                  className="bg-transparent text-start p-1 w-full"
                   type="text"
-                  defaultValue='16" v/d GM'
+                  defaultValue="16' v/d GM"
                   onClick={openDrawer}
+                  onChange={(e) => setSearchTerm(e.target.value)}
                 />
               </td>
               <td className="text-center w-28">
@@ -691,5 +724,4 @@ const SalesManual = () => {
     </div>
   );
 };
-
 export default SalesManual;
